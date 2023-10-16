@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { Todo } from "./Todo";
+import { AddTodo } from "./AddTodo";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+export function App() {
+    const [todos, setTodos] = useState(
+        [
+            { id: 1, model: "Opel", done: false },
+           
+        ]);
+
+    const addTodo = (text) => {
+        const newCar = {
+            id: Date.now(),
+            model: text,
+            done: false
+        }
+        setTodos([...todos, newCar]);
+    }
+    const removeTodo = (id) => {
+        const refreshTodo = todos.filter(el => el.id !== id)
+        setTodos(refreshTodo)
+    }
+    const doneTodo = (id) => {
+        const newdone = todos.map(el => {
+            if (el.id === id) el.done = !el.done
+            return el
+        })
+        setTodos(newdone);
+    }
+
+    return <div className="App">
+        <AddTodo addTodo={addTodo}/>
+        <Todo todos ={todos} removeTodo = {removeTodo} doneTodo = {doneTodo} />
     </div>
-  );
-}
-
-export default App;
+    
+};
